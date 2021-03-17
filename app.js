@@ -97,6 +97,7 @@ let gameboard = (function() {
             myBoard[i] = "";
         }
     }
+   
 
     return {renderMyBoard, myBoard, checkIfWon, clearBoard}
 })();
@@ -117,7 +118,7 @@ let game = function() {
         gameboard.clearBoard();
         gameboard.renderMyBoard();
     })
-    
+
     let currentTurn = Player1.logo;
 
     function changeTurn() {
@@ -155,6 +156,7 @@ let game = function() {
                 } else if(field.classList.contains("bot-r")) {
                     gameboard.myBoard[8] = currentTurn;
                 }
+
                 display.textContent = "";
                 console.log(gameboard.myBoard, currentTurn)
                 gameboard.renderMyBoard();
@@ -162,15 +164,12 @@ let game = function() {
                 gameboard.checkIfWon();
                 
                 if(display.textContent != "") {
-
                         gameboard.clearBoard();
                         gameboard.renderMyBoard();
-                        
                 }
             }
         })
     })
-
     
-    return {Player1, Player2}
+    return {Player1, Player2, fields}
 }();

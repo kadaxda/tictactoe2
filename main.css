@@ -13,8 +13,8 @@
 }
 
 .field {
-    background-color: gold;
-    border: 1px solid blueviolet;
+    background-color: rgb(20, 223, 179);
+    border: 1px solid rgb(0, 0, 0);
     width: 100px;
     height: 100px;
     display: flex;
