@@ -1,5 +1,9 @@
 //Selectors
 const display = document.querySelector("#display")
+const playerOneInput = document.querySelector("#playerOneInput")
+const playerTwoInput = document.querySelector("#playerTwoInput")
+const startBtn = document.querySelector("#startBtn")
+const restartBtn = document.querySelector("#restartBtn")
 
 //Player factory
 let Player = function(name, logo){
@@ -8,20 +12,8 @@ let Player = function(name, logo){
     return {name, logo}
 }
 
-//Game
-let game = function() {
-
-    Player1 = Player("Human", "X");
-    Player2 = Player("PC", "O")
-    
-    return {Player1, Player2}
-}();
-
-
 //Gameboard module
 let gameboard = (function() {
-
-    let currentTurn = Player1.logo
 
     let myBoard = [ "", "", "",
                     "", "", "",
@@ -34,48 +26,6 @@ let gameboard = (function() {
         }
     }
 
-    let fields = document.querySelectorAll(".field");
-    fields.forEach((field) => {
-        field.addEventListener("click", (e) => {
-            if(field.textContent == "") {
-                if(field.classList.contains("top-l")) {
-                    myBoard[0] = currentTurn;
-                } else if(field.classList.contains("top-m")) {
-                    myBoard[1] = currentTurn;
-                } else if(field.classList.contains("top-r")) {
-                    myBoard[2] = currentTurn;
-                }
-
-                else if(field.classList.contains("mid-l")) {
-                    myBoard[3] = currentTurn;
-                } else if(field.classList.contains("mid-m")) {
-                    myBoard[4] = currentTurn;
-                } else if(field.classList.contains("mid-r")) {
-                    myBoard[5] = currentTurn;
-                }
-
-                else if(field.classList.contains("bot-l")) {
-                    myBoard[6] = currentTurn;
-                } else if(field.classList.contains("bot-m")) {
-                    myBoard[7] = currentTurn;
-                } else if(field.classList.contains("bot-r")) {
-                    myBoard[8] = currentTurn;
-                }
-                console.log(myBoard)
-                renderMyBoard();
-                changeTurn();   
-                checkIfWon();         
-            }
-        })
-    })
-
-    function changeTurn() {
-        if(currentTurn == "X") {
-            currentTurn = "O"
-        } else {
-            currentTurn = "X"
-        };
-    }
 
     function checkIfWon() {
         if(myBoard[0] == myBoard[1] && myBoard[1] == myBoard[2] && myBoard[2] != "") {
@@ -142,8 +92,85 @@ let gameboard = (function() {
         }
     }
     
+    function clearBoard() {
+        for(let i = 0; i<myBoard.length; i++) {
+            myBoard[i] = "";
+        }
+    }
 
-    return {renderMyBoard, myBoard}
+    return {renderMyBoard, myBoard, checkIfWon, clearBoard}
 })();
 
 
+//Game
+let game = function() {
+
+    Player1 = Player("Human", "X");
+    Player2 = Player("PC", "O")
+
+    startBtn.addEventListener("click", () => {
+        Player1 = Player(playerOneInput.value, "X")
+        Player2 = Player(playerTwoInput.value, "O")
+    })
+
+    restartBtn.addEventListener("click", function() {
+        gameboard.clearBoard();
+        gameboard.renderMyBoard();
+    })
+    
+    let currentTurn = Player1.logo;
+
+    function changeTurn() {
+        if(currentTurn == "X") {
+            currentTurn = "O"
+        } else {
+            currentTurn = "X"
+        };
+    }
+
+    let fields = document.querySelectorAll(".field");
+    fields.forEach((field) => {
+        field.addEventListener("click", (e) => {
+            if(field.textContent == "") {
+                if(field.classList.contains("top-l")) {
+                    gameboard.myBoard[0] = currentTurn;
+                } else if(field.classList.contains("top-m")) {
+                    gameboard.myBoard[1] = currentTurn;
+                } else if(field.classList.contains("top-r")) {
+                    gameboard.myBoard[2] = currentTurn;
+                }
+
+                else if(field.classList.contains("mid-l")) {
+                    gameboard.myBoard[3] = currentTurn;
+                } else if(field.classList.contains("mid-m")) {
+                    gameboard.myBoard[4] = currentTurn;
+                } else if(field.classList.contains("mid-r")) {
+                    gameboard.myBoard[5] = currentTurn;
+                }
+
+                else if(field.classList.contains("bot-l")) {
+                    gameboard.myBoard[6] = currentTurn;
+                } else if(field.classList.contains("bot-m")) {
+                    gameboard.myBoard[7] = currentTurn;
+                } else if(field.classList.contains("bot-r")) {
+                    gameboard.myBoard[8] = currentTurn;
+                }
+                display.textContent = "";
+                console.log(gameboard.myBoard, currentTurn)
+                gameboard.renderMyBoard();
+                changeTurn();   
+                gameboard.checkIfWon();
+                
+                if(display.textContent != "") {
+
+                        gameboard.clearBoard();
+                        gameboard.renderMyBoard();
+                        
+                }
+            }
+        })
+    })
+
+    
+    return {Player1, Player2}
+}();
