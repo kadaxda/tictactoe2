@@ -15,6 +15,8 @@ let Player = function(name, logo){
 //Gameboard module
 let gameboard = (function() {
 
+    let winnerBoard;
+
     let myBoard = [ "", "", "",
                     "", "", "",
                     "", "", ""]
@@ -26,7 +28,6 @@ let gameboard = (function() {
         }
     }
 
-
     function checkIfWon() {
         if(myBoard[0] == myBoard[1] && myBoard[1] == myBoard[2] && myBoard[2] != "") {
             if(myBoard[0] == "X") {
@@ -35,6 +36,7 @@ let gameboard = (function() {
                 winningPlayer = Player2;
             }
             display.textContent = `The Winner is ${winningPlayer.name} ${winningPlayer.logo}`
+            winnerBoard = "123";
         } else if(myBoard[3] == myBoard[4] && myBoard[4] == myBoard[5] && myBoard[5] != "") {
             if(myBoard[3] == "X") {
                 winningPlayer = Player1;
@@ -42,6 +44,7 @@ let gameboard = (function() {
                 winningPlayer = Player2;
             }
             display.textContent = `The Winner is ${winningPlayer.name} ${winningPlayer.logo}`
+            winnerBoard = "345";
         } else if(myBoard[6] == myBoard[7] && myBoard[7] == myBoard[8] && myBoard[8] != "") {
             if(myBoard[6] == "X") {
                 winningPlayer = Player1;
@@ -49,6 +52,7 @@ let gameboard = (function() {
                 winningPlayer = Player2;
             }
             display.textContent = `The Winner is ${winningPlayer.name} ${winningPlayer.logo}`
+            winnerBoard = "678";
         } 
         
         
@@ -59,6 +63,7 @@ let gameboard = (function() {
                 winningPlayer = Player2;
             }
             display.textContent = `The Winner is ${winningPlayer.name} ${winningPlayer.logo}`
+            winnerBoard = "036";
         } else if(myBoard[1] == myBoard[4] && myBoard[4] == myBoard[7] && myBoard[7] != "") {
             if(myBoard[1] == "X") {
                 winningPlayer = Player1;
@@ -66,6 +71,7 @@ let gameboard = (function() {
                 winningPlayer = Player2;
             }
             display.textContent = `The Winner is ${winningPlayer.name} ${winningPlayer.logo}`
+            winnerBoard = "147";
         } else if(myBoard[2] == myBoard[5] && myBoard[5] == myBoard[8] && myBoard[8] != "") {
             if(myBoard[2] == "X") {
                 winningPlayer = Player1;
@@ -73,6 +79,7 @@ let gameboard = (function() {
                 winningPlayer = Player2;
             }
             display.textContent = `The Winner is ${winningPlayer.name} ${winningPlayer.logo}`
+            winnerBoard = "258";
         } 
 
         else if(myBoard[0] == myBoard[4] && myBoard[4] == myBoard[8] && myBoard[8] != "") {
@@ -82,6 +89,7 @@ let gameboard = (function() {
                 winningPlayer = Player2;
             }
             display.textContent = `The Winner is ${winningPlayer.name} ${winningPlayer.logo}`
+            winnerBoard = "048";
         } else if(myBoard[2] == myBoard[4] && myBoard[4] == myBoard[6] && myBoard[6] != "") {
             if(myBoard[2] == "X") {
                 winningPlayer = Player1;
@@ -89,9 +97,14 @@ let gameboard = (function() {
                 winningPlayer = Player2;
             }
             display.textContent = `The Winner is ${winningPlayer.name} ${winningPlayer.logo}`
+            winnerBoard = "246";
         }
+        else {
+            winnerBoard = "";
+        }
+        return winnerBoard;
     }
-    
+
     function clearBoard() {
         for(let i = 0; i<myBoard.length; i++) {
             myBoard[i] = "";
@@ -99,7 +112,7 @@ let gameboard = (function() {
     }
    
 
-    return {renderMyBoard, myBoard, checkIfWon, clearBoard}
+    return {renderMyBoard, myBoard, checkIfWon, clearBoard, winnerBoard}
 })();
 
 
@@ -121,6 +134,8 @@ let game = function() {
 
     let currentTurn = Player1.logo;
 
+    
+
     function changeTurn() {
         if(currentTurn == "X") {
             currentTurn = "O"
@@ -132,7 +147,15 @@ let game = function() {
     let fields = document.querySelectorAll(".field");
     fields.forEach((field) => {
         field.addEventListener("click", (e) => {
+
+            if(display.textContent != "") {
+                gameboard.clearBoard();
+                gameboard.renderMyBoard();
+                
+        }
+
             if(field.textContent == "") {
+
                 if(field.classList.contains("top-l")) {
                     gameboard.myBoard[0] = currentTurn;
                 } else if(field.classList.contains("top-m")) {
@@ -163,10 +186,8 @@ let game = function() {
                 changeTurn();   
                 gameboard.checkIfWon();
                 
-                if(display.textContent != "") {
-                        gameboard.clearBoard();
-                        gameboard.renderMyBoard();
-                }
+                console.log(gameboard.checkIfWon())
+                
             }
         })
     })
