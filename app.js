@@ -4,6 +4,7 @@ const playerOneInput = document.querySelector("#playerOneInput")
 const playerTwoInput = document.querySelector("#playerTwoInput")
 const startBtn = document.querySelector("#startBtn")
 const restartBtn = document.querySelector("#restartBtn")
+const AiBtn = document.querySelector("#AiBtn")
 
 //Player factory
 let Player = function(name, logo){
@@ -120,7 +121,25 @@ let gameboard = (function() {
 let game = function() {
 
     Player1 = Player("Human", "X");
-    Player2 = Player("PC", "O")
+    Player2 = Player("PC", "O");
+
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * Math.floor(max));
+      }
+
+    let AI = false;
+    AiBtn.addEventListener("click", (e) => {
+        if(AI == false) {
+            AI = true;
+        } else {
+            AI = false;
+        }
+
+        if(AI == true) {
+            gameboard.myBoard[getRandomInt(9)] = Player2.logo;
+            gameboard.renderMyBoard()
+        }
+    })
 
     startBtn.addEventListener("click", () => {
         Player1 = Player(playerOneInput.value, "X")
@@ -134,7 +153,6 @@ let game = function() {
 
     let currentTurn = Player1.logo;
 
-    
 
     function changeTurn() {
         if(currentTurn == "X") {
@@ -144,9 +162,40 @@ let game = function() {
         };
     }
 
+    function addWinningClass(numbers) {
+        if(numbers == "") {
+            return;
+        }
+
+        let fields = document.querySelectorAll(".field");
+        let temp = numbers.split("");
+        console.log(temp)
+        for(let i = 0; i<fields.length; i++) {
+            fields[temp[i]].classList.add("winner")
+        }
+    }
+
+    function removeWinningClass() {
+        let fields = document.querySelectorAll(".field");
+        for(let i = 0; i<fields.length; i++) {
+            fields[i].classList.remove("winner")
+        }
+    }
+
+    function AiMove() {
+        let randomPick = getRandomInt(9);
+        while(gameboard.myBoard[randomPick] == ""){
+            randomPick = getRandomInt(9);
+            gameboard.myBoard[randomPick] = Player2.logo;
+            gameboard.renderMyBoard();
+        }
+    }
+
     let fields = document.querySelectorAll(".field");
     fields.forEach((field) => {
         field.addEventListener("click", (e) => {
+
+
 
             if(display.textContent != "") {
                 gameboard.clearBoard();
@@ -180,14 +229,23 @@ let game = function() {
                     gameboard.myBoard[8] = currentTurn;
                 }
 
+                if(AI == true) {
+                    AiMove();
+                }
+
                 display.textContent = "";
                 console.log(gameboard.myBoard, currentTurn)
                 gameboard.renderMyBoard();
-                changeTurn();   
+                if(AI != true) {
+                    changeTurn(); 
+                }  
                 gameboard.checkIfWon();
                 
-                console.log(gameboard.checkIfWon())
-                
+                addWinningClass(gameboard.checkIfWon())
+                removeWinningClass();
+
+    
+    
             }
         })
     })

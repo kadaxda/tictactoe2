@@ -22,3 +22,7 @@
     align-items: center;
     font-size: 50px;
 }
+
+.winner {
+    background-color: chartreuse;
+}
