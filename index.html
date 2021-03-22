@@ -6,40 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TicTacToe2</title>
     <link rel="stylesheet" href="main.css">    
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet"> 
 </head>
 <body>
-    
-    <h1>TicTacToe by kadaxda</h1>
+    <div class="frame">
+        <h1>TicTacToe</h1>
 
-    <div class="gameboardContainer">
-        <div class="field top-l"></div>
-        <div class="field top-m"></div>
-        <div class="field top-r"></div>
+        <div class="gameboardContainer">
+            <div class="field top-l"></div>
+            <div class="field top-m"></div>
+            <div class="field top-r"></div>
 
-        <div class="field mid-l"></div>
-        <div class="field mid-m"></div>
-        <div class="field mid-r"></div>
+            <div class="field mid-l"></div>
+            <div class="field mid-m"></div>
+            <div class="field mid-r"></div>
 
-        <div class="field bot-l"></div>
-        <div class="field bot-m"></div>
-        <div class="field bot-r"></div>
+            <div class="field bot-l"></div>
+            <div class="field bot-m"></div>
+            <div class="field bot-r"></div>
+        </div>
+
+        <p id="display"></p><br>
+
+        <div class="inputContainer">
+            <p>Player1: (X)</p>
+            <input type="text" placeholder="Name" id="playerOneInput">
+            <br>
+            <p>Player2: (O)</p>
+            <input type="text" placeholder="Name" id="playerTwoInput">
+            <br>
+            <input type="button" value="Start" id="startBtn" class="startrestart">
+            <input type="button" value="Restart" id="restartBtn" class="startrestart">
+        </div>
+
+        <input type="button" value="Play against AI!" id="AiBtn">
     </div>
-
-    <p id="display"></p><br>
-
-    <div class="inputContainer">
-        <p>Player1: (X)</p>
-        <input type="text" placeholder="Name" id="playerOneInput">
-        <br>
-        <p>Player2: (O)</p>
-        <input type="text" placeholder="Name" id="playerTwoInput">
-        <br>
-        <input type="button" value="Start" id="startBtn">
-        <input type="button" value="Restart" id="restartBtn">
-    </div>
-
-    <input type="button" value="Play vs AI" id="AiBtn">
-
     <script src="app.js"></script>
 </body>
 </html>

@@ -89,7 +89,7 @@ let gameboard = (function() {
             } else {
                 winningPlayer = Player2;
             }
-            display.textContent = `The Winner is ${winningPlayer.name} ${winningPlayer.logo}`
+            display.textContent = `The Winner is ${winningPlayer.name} (${winningPlayer.logo})`
             winnerBoard = "048";
         } else if(myBoard[2] == myBoard[4] && myBoard[4] == myBoard[6] && myBoard[6] != "") {
             if(myBoard[2] == "X") {
@@ -97,10 +97,12 @@ let gameboard = (function() {
             } else {
                 winningPlayer = Player2;
             }
-            display.textContent = `The Winner is ${winningPlayer.name} ${winningPlayer.logo}`
+            display.textContent = `The Winner is ${winningPlayer.name} (${winningPlayer.logo})`
             winnerBoard = "246";
+        } else if(myBoard.includes("") == false) {
+            display.textContent = `Its a draw!`
         }
-        else {
+                else {
             winnerBoard = "";
         }
         return winnerBoard;
@@ -122,6 +124,7 @@ let game = function() {
 
     Player1 = Player("Human", "X");
     Player2 = Player("PC", "O");
+    let currentTurn = Player1.logo;
 
     function getRandomInt(max) {
         return Math.floor(Math.random() * Math.floor(max));
@@ -129,10 +132,20 @@ let game = function() {
 
     let AI = false;
     AiBtn.addEventListener("click", (e) => {
+        removeWinningClass();
+
+        gameboard.clearBoard()
+        currentTurn = Player1.logo;
+        
         if(AI == false) {
             AI = true;
+            AiBtn.value = "Play against your friend!"
         } else {
             AI = false;
+            AiBtn.value = "Play against AI!"
+            gameboard.clearBoard()
+            removeWinningClass();
+            gameboard.renderMyBoard();
         }
 
         if(AI == true) {
@@ -144,14 +157,20 @@ let game = function() {
     startBtn.addEventListener("click", () => {
         Player1 = Player(playerOneInput.value, "X")
         Player2 = Player(playerTwoInput.value, "O")
+        gameboard.clearBoard();
+        gameboard.renderMyBoard();
+        removeWinningClass();
+        AI = false;
+        display.textContent = "";
     })
 
     restartBtn.addEventListener("click", function() {
         gameboard.clearBoard();
         gameboard.renderMyBoard();
+        removeWinningClass();
+        display.textContent = "";
+        AI = false;
     })
-
-    let currentTurn = Player1.logo;
 
 
     function changeTurn() {
@@ -170,7 +189,14 @@ let game = function() {
         let fields = document.querySelectorAll(".field");
         let temp = numbers.split("");
         console.log(temp)
+
+
         for(let i = 0; i<fields.length; i++) {
+
+            if(fields[temp[i]] == undefined) {
+                return;
+            }
+
             fields[temp[i]].classList.add("winner")
         }
     }
@@ -183,11 +209,16 @@ let game = function() {
     }
 
     function AiMove() {
-        let randomPick = getRandomInt(9);
-        while(gameboard.myBoard[randomPick] == ""){
-            randomPick = getRandomInt(9);
-            gameboard.myBoard[randomPick] = Player2.logo;
-            gameboard.renderMyBoard();
+        while(true) {
+            let randomPick = getRandomInt(9);
+            console.log(randomPick)
+            if(gameboard.myBoard[randomPick] == ""){
+                gameboard.myBoard[randomPick] = Player2.logo;
+                gameboard.renderMyBoard();
+                break;
+            } else {
+                continue;
+            }
         }
     }
 
@@ -195,11 +226,10 @@ let game = function() {
     fields.forEach((field) => {
         field.addEventListener("click", (e) => {
 
-
-
             if(display.textContent != "") {
                 gameboard.clearBoard();
                 gameboard.renderMyBoard();
+                removeWinningClass()
                 
         }
 
@@ -230,7 +260,9 @@ let game = function() {
                 }
 
                 if(AI == true) {
-                    AiMove();
+                    setTimeout(function() {
+                        AiMove();
+                    }, 750);
                 }
 
                 display.textContent = "";
@@ -242,7 +274,7 @@ let game = function() {
                 gameboard.checkIfWon();
                 
                 addWinningClass(gameboard.checkIfWon())
-                removeWinningClass();
+                
 
     
     
