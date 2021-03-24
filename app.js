@@ -209,12 +209,18 @@ let game = function() {
     }
 
     function AiMove() {
+        if(display.textContent != "") {
+            return;
+        }
         while(true) {
             let randomPick = getRandomInt(9);
             console.log(randomPick)
             if(gameboard.myBoard[randomPick] == ""){
                 gameboard.myBoard[randomPick] = Player2.logo;
                 gameboard.renderMyBoard();
+                gameboard.checkIfWon();
+                
+                addWinningClass(gameboard.checkIfWon())
                 break;
             } else {
                 continue;
